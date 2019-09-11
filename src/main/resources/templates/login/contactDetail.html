@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org" xmlns: layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"></meta>
+</head>
+<body>
+<div th:fragment="contactDetail_contents">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="page-header">
+                <h1>連絡詳細</h1>
+            </div>
+            <form method="post" th:action="@{/contactDetail}" th:object="${contactForm}">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <!-- ユーザーID（入力不可） -->
+                        <th class="active col-sm-2">タイトル</th>
+                        <td class="col-sm-3">
+                            <div class="form-group">
+                                <input type="text" class="form-control" th:field="*{title}" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!-- パスワード -->
+                        <th class="active">内容</th>
+                        <td>
+                            <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
+                                <input type="text" class="form-control" th:field="*{text}" />
+                                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!-- ユーザー名 -->
+                        <th class="active">投稿者</th>
+                        <td>
+                            <div class="form-group" th:classappend="${#fields.hasErrors('userName')} ? 'has-error'">
+                                <input type="text" class="form-control" th:field="*{contributor}" />
+                                <span class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName error</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!-- 誕生日 -->
+                        <th class="active">制作日</th>
+                        <td>
+                            <div class="form-group" th:classappend="${#fields.hasErrors('birthday')} ? 'has-error'">
+                                <input type="text" class="form-control" placeholder="yyyy/MM/dd" th:field="*{createDate}" />
+                                <span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">birthday error</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- 更新ボタン -->
+                <button class="btn btn-primary btn-lg pull-right" type="submit" name="update">更新</button>
+                <!-- 削除ボタン -->
+                <button class="btn btn-danger btn-lg" type="submit" name="delete">削除</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
