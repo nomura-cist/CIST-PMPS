@@ -77,7 +77,7 @@ public class UserDaoJdbcImpl implements UserDao {
             user.setRole((String)map.get("role"));
 
             userList.add(user);
-            System.out.println(userList);
+
         }
 
         return userList;

@@ -14,7 +14,7 @@
                 <table class="table table-bordered table-hover">
                     <tr>
                         <!-- ユーザーID（入力不可） -->
-                        <th class="active col-sm-2">タイトル</th>
+                        <th class="active col-sm-1">タイトル</th>
                         <td class="col-sm-3">
                             <div class="form-group">
                                 <input type="text" class="form-control" th:field="*{title}" />
@@ -25,9 +25,10 @@
                         <!-- パスワード -->
                         <th class="active">内容</th>
                         <td>
-                            <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
-                                <input type="text" class="form-control" th:field="*{text}" />
-                                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</span>
+                            <div class="form-group" th:classappend="${#fields.hasErrors('text')} ? 'has-error'">
+                                <!--input type="text" class="form-control" th:field="*{text}" /-->
+                                <textarea type="text" class="form-control" rows="5" th:field="*{text}"></textarea>
+                                <span class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">password error</span>
                             </div>
                         </td>
                     </tr>
@@ -35,9 +36,9 @@
                         <!-- ユーザー名 -->
                         <th class="active">投稿者</th>
                         <td>
-                            <div class="form-group" th:classappend="${#fields.hasErrors('userName')} ? 'has-error'">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('contributor')} ? 'has-error'">
                                 <input type="text" class="form-control" th:field="*{contributor}" />
-                                <span class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName error</span>
+                                <span class="text-danger" th:if="${#fields.hasErrors('contributor')}" th:errors="*{contributor}">userName error</span>
                             </div>
                         </td>
                     </tr>
@@ -45,9 +46,9 @@
                         <!-- 誕生日 -->
                         <th class="active">制作日</th>
                         <td>
-                            <div class="form-group" th:classappend="${#fields.hasErrors('birthday')} ? 'has-error'">
+                            <div class="form-group" th:classappend="${#fields.hasErrors('createDate')} ? 'has-error'">
                                 <input type="text" class="form-control" placeholder="yyyy/MM/dd" th:field="*{createDate}" />
-                                <span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">birthday error</span>
+                                <span class="text-danger" th:if="${#fields.hasErrors('createDate')}" th:errors="*{createDate}">birthday error</span>
                             </div>
                         </td>
                     </tr>

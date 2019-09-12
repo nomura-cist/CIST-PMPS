@@ -23,6 +23,8 @@ public class HomeController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
     ContactService contactService;
 
     private Map<String,String> radioMarriage;
@@ -64,7 +66,6 @@ public class HomeController {
     public String getContactList(Model model) {
 
         model.addAttribute("contents","login/contactList::contactList_contents");
-
         List<Contact> contactList = contactService.selectMany();
 
         model.addAttribute("contactList",contactList);
@@ -110,7 +111,7 @@ public class HomeController {
     }
 
     @GetMapping("/contactDetail/{id:.+}")
-    public String getContactDetail(@ModelAttribute ContactForm form, Model model, @PathVariable("title")String title) {
+    public String getContactDetail(@ModelAttribute ContactForm form, Model model, @PathVariable("id")String title) {
 
         System.out.println("title="+title);
 

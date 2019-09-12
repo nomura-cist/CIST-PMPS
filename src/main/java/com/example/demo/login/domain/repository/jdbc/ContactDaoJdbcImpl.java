@@ -61,7 +61,6 @@ public class ContactDaoJdbcImpl implements ContactDao {
     public List<Contact> selectMany() throws DataAccessException {
 
         List<Map<String,Object>> getList = jdbc.queryForList("SELECT * FROM m_contact");
-
         List<Contact> contactList = new ArrayList<>();
 
         for (Map<String,Object> map: getList){
@@ -73,9 +72,9 @@ public class ContactDaoJdbcImpl implements ContactDao {
             contact.setContributor((String)map.get("contribute"));
             contact.setCreateDate((Date) map.get("create_date"));
             contact.setRole((String)map.get("role"));
-
+            System.out.println(contact);
             contactList.add(contact);
-            System.out.println(contactList);
+
         }
 
         return contactList;

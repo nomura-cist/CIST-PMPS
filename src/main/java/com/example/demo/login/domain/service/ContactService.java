@@ -12,11 +12,11 @@ import java.util.List;
 public class ContactService {
 
     @Autowired
-    ContactDao dao;
+    ContactDao contactdao;
 
     public boolean insert(Contact contact) {
 
-        int rowNumber = dao.insertOne(contact);
+        int rowNumber = contactdao.insertOne(contact);
 
         boolean result = false;
 
@@ -29,17 +29,17 @@ public class ContactService {
     }
 
     public int count() {
-        return dao.count();
+        return contactdao.count();
     }
 
     public List<Contact> selectMany() {
 
-        return dao.selectMany();
+        return contactdao.selectMany();
     }
 
     public Contact selectOne(String title) {
 
-        return dao.selectOne(title);
+        return contactdao.selectOne(title);
     }
 
 }
