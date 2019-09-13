@@ -8,16 +8,16 @@
     <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"rel="stylesheet"></link>
     <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+    <link th:href="@{/css/signup.css}" rel="stylesheet">
     <title>SignUp</title>
 </head>
 <body>
-<div class="col-sm-5">
-    <div class="page-header">
+<div class="col-sm-6 col-md-offset-3">
+    <div class="page-header text-center">
         <h1>ユーザー登録画面</h1>
     </div>
     <form method="post" th:action="@{/signup}"th:object="${signupForm}">
         <table class="table table-bordered table-hover">
-
             <tr>
                 <th class="active col-sm-3">ユーザーID</th>
                 <td>

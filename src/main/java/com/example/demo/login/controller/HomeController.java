@@ -7,6 +7,7 @@ import com.example.demo.login.domain.model.User;
 import com.example.demo.login.domain.service.ContactService;
 import com.example.demo.login.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -134,6 +135,78 @@ public class HomeController {
         return "login/homeLayout";
     }
 
+    @PostMapping(value = "/userDetail",params = "update")
+    public String postUserDetailUpdate(@ModelAttribute SignupForm form, Model model) {
+
+        System.out.println("更新ボタンの処理");
+
+        User user = new User();
+
+        user.setUserId(form.getUserId());
+        user.setPassword(form.getPassword());
+        user.setUserName(form.getUserName());
+        user.setBirthday(form.getBirthday());
+        user.setAge(form.getAge());
+        user.setMarriage(form.isMarriage());
+
+        try {
+
+            boolean result = userService.updateOne(user);
+
+            if (result == true) {
+                model.addAttribute("result", "更新成功");
+            } else {
+                model.addAttribute("result", "更新失敗");
+            }
+
+        } catch (DataAccessException e) {
+
+            model.addAttribute("result", "更新失敗(トランザクションテスト)");
+
+        }
+
+        //ユーザー一覧画面を表示
+        return getUserList(model);
+
+
+    }
+
+    @PostMapping(value = "/userDetail",params = "delete")
+    public String postUserDetailDelete(@ModelAttribute SignupForm form,Model model) {
+
+        System.out.println("削除ボタンの処理");
+
+        boolean result = userService.deleteOne(form.getUserId());
+
+        if (result == true) {
+            model.addAttribute("result", "削除成功");
+        } else {
+            model.addAttribute("result", "削除失敗");
+        }
+
+
+    //ユーザー一覧画面を表示
+        return getUserList(model);
+    }
+
+
+    @PostMapping(value = "/contactDetail",params = "delete")
+    public String postContactDetailDelete(@ModelAttribute ContactForm form,Model model) {
+
+        System.out.println("削除ボタンの処理");
+
+        boolean result = contactService.deleteOne(form.getTitle());
+
+        if (result == true) {
+            model.addAttribute("result", "削除成功");
+        } else {
+            model.addAttribute("result", "削除失敗");
+        }
+
+
+        //ユーザー一覧画面を表示
+        return getContactList(model);
+    }
 
     @PostMapping("/logout")
     public String postLogout() {

@@ -89,7 +89,9 @@ public class ContactDaoJdbcImpl implements ContactDao {
     // Userテーブルを１件削除.
     @Override
     public int deleteOne(String title) throws DataAccessException {
-        return 0;
+        int rowNumber = jdbc.update("delete from m_contact where title=?",title);
+
+        return rowNumber;
     }
 
     // SQL取得結果をサーバーにCSVで保存する

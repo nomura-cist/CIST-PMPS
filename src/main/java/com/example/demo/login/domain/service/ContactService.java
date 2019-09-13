@@ -20,7 +20,7 @@ public class ContactService {
 
         boolean result = false;
 
-        if (rowNumber > 0){
+        if (rowNumber > 0) {
 
             result = true;
         }
@@ -40,6 +40,21 @@ public class ContactService {
     public Contact selectOne(String title) {
 
         return contactdao.selectOne(title);
+    }
+
+    public boolean deleteOne(String title) {
+
+        int rowNumber = contactdao.deleteOne(title);
+
+        boolean result = false;
+
+        if (rowNumber > 0) {
+
+            result = true;
+        }
+
+        return result;
+
     }
 
 }

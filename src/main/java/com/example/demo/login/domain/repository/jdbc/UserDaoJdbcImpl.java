@@ -86,14 +86,32 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public int updateOne(User user) throws DataAccessException {
 
-        List<Map<String,Object>> getList = jdbc.queryForList("SELECT * FROM m_user");
-        return 0;
+        //１件更新
+        int rowNumber = jdbc.update("UPDATE M_USER"
+                        + " SET"
+                        + " password = ?,"
+                        + " user_name = ?,"
+                        + " birthday = ?,"
+                        + " age = ?,"
+                        + " marriage = ?"
+                        + " WHERE user_id = ?",
+                user.getPassword(),
+                user.getUserName(),
+                user.getBirthday(),
+                user.getAge(),
+                user.isMarriage(),
+                user.getUserId());
+
+
+        return rowNumber;
     }
 
     @Override
     public int deleteOne(String userId) throws DataAccessException {
 
-        return 0;
+        int rowNumber = jdbc.update("DELETE FROM m_user where user_id=?",userId);
+
+        return rowNumber;
     }
 
     @Override
