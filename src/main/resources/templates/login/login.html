@@ -4,6 +4,7 @@
 <head>
 <link>
     <meta charset="UTF-8">
+    <!--Bootstrapの設定-->
     <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"rel="stylesheet"></link>
 <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
@@ -16,15 +17,20 @@
 <h1>ログイン</h1>
 <form method="post" action="/login">
     <!--label>ユーザーID</label-->
+    <p th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null"
+       th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
+       class="text-danger">
+        ログインエラーメッセージ
+    </p>
     <div class="form-item">
-    <label for="userID"></label>
-    <input type="text" placeholder="ユーザーID" id="userID"/>
+    <label ></label>
+    <input type="text" placeholder="ユーザーID" name="userId"/>
 
     </div>
 
     <div class="form-item">
-    <label for="password"></label>
-    <input type="password" placeholder="パスワード" id="password"/>
+    <label ></label>
+    <input type="password" placeholder="パスワード" name="password"/>
 
     </div>
     <br>

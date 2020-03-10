@@ -5,15 +5,17 @@ import com.example.demo.login.domain.repository.CreateNewDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CreateNewService {
 
     @Autowired
-    CreateNewDao dao;
+    CreateNewDao createNewDao;
 
     public boolean insert(Contact contact) {
 
-        int rowNumber = dao.insertOne(contact);
+        int rowNumber = createNewDao.insertOne(contact);
 
         boolean result = false;
 
@@ -23,5 +25,10 @@ public class CreateNewService {
         }
 
         return result;
+    }
+
+    public List<Contact> selectMany() {
+
+        return createNewDao.selectMany();
     }
 }

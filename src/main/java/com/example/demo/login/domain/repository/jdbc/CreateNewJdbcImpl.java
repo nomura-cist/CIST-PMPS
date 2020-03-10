@@ -7,6 +7,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class CreateNewJdbcImpl implements CreateNewDao {
 
@@ -30,5 +35,28 @@ public class CreateNewJdbcImpl implements CreateNewDao {
         int rowNumber = jdbc.update("delete from m_contact where title=?",title);
 
         return rowNumber;
+    }
+
+    @Override
+    public List<Contact> selectMany() throws DataAccessException {
+
+        List<Map<String,Object>> getList = jdbc.queryForList("SELECT * FROM m_contact");
+        List<Contact> contactList = new ArrayList<>();
+
+        for (Map<String,Object> map: getList){
+
+            Contact contact = new Contact();
+
+            contact.setTitle((String)map.get("title"));
+            contact.setText((String)map.get("text"));
+            contact.setContributor((String)map.get("contribute"));
+            contact.setCreateDate((Date) map.get("create_date"));
+            contact.setRole((String)map.get("role"));
+            System.out.println(contact);
+            contactList.add(contact);
+
+        }
+
+        return contactList;
     }
 }

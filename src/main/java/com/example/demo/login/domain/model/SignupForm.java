@@ -30,6 +30,7 @@ public class SignupForm {
     @Max(value = 100,groups = ValidGroup2.class)
     private int age;
 
-    @AssertFalse(groups = ValidGroup2.class)
+    //@AssertFalse(groups = ValidGroup2.class)
+    //@Pattern(regexp = "^[a-zA-Z0-9]+$",groups = ValidGroup3.class)
     private boolean marriage;
 }

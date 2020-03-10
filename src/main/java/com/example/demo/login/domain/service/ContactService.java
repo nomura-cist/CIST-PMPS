@@ -57,4 +57,19 @@ public class ContactService {
 
     }
 
+    public boolean updateOne(Contact contact){
+
+        int rowNumber = contactdao.updateOne(contact);
+
+        boolean result = false;
+
+        if (rowNumber > 0) {
+
+            result = true;
+        }
+
+        return result;
+
+    }
+
 }

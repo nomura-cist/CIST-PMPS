@@ -47,7 +47,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="active">誕生日</th>
+                <th class="active">登録日</th>
                 <td>
                     <div class="form-group" th:classappend="${#fields.hasErrors('birthday')} ?'has-error'">
                         <input type="text" class="form-control" placeholder="yyyy/MM/dd" th:field="*{birthday}"/>
@@ -65,7 +65,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="active">結婚</th>
+                <th class="active">性別</th>
                 <td>
                     <div class="form-group">
                         <div th:each="item:${radioMarriage}">

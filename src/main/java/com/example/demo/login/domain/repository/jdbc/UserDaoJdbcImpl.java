@@ -5,6 +5,7 @@ import com.example.demo.login.domain.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,11 +13,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+@Repository("UserDaoJdbcImpl")
 public class UserDaoJdbcImpl implements UserDao {
 
     @Autowired
     JdbcTemplate jdbc;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public int count() throws DataAccessException {
@@ -28,14 +32,24 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public int insertOne(User user) throws DataAccessException {
 
-        int rowNumber = jdbc.update("INSERT INTO m_user(user_id, password, user_name, birthday, age, marriage, role) values (?,?,?,?,?,?,?)"
-        ,user.getUserId()
-        ,user.getPassword()
-        ,user.getUserName()
-        ,user.getBirthday()
-        ,user.getAge()
-        ,user.isMarriage()
-        ,user.getRole());
+        String password = passwordEncoder.encode(user.getPassword());
+
+        int rowNumber = jdbc.update("INSERT INTO m_user(user_id,"
+                        + " password,"
+                        + " user_name,"
+                        + " birthday,"
+                        + " age,"
+                        + " marriage,"
+                        + " role)"
+                        + " VALUES(?, ?, ?, ?, ?, ?, ?)",
+                user.getUserId(),
+                password,
+                user.getUserName(),
+                user.getBirthday(),
+                user.getAge(),
+                user.isMarriage(),
+                user.getRole());
+
         return rowNumber;
     }
 
@@ -86,16 +100,18 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public int updateOne(User user) throws DataAccessException {
 
+//        String password = passwordEncoder.encode(user.getPassword());
+
         //１件更新
         int rowNumber = jdbc.update("UPDATE M_USER"
                         + " SET"
-                        + " password = ?,"
+                        //+ " password = ?,"
                         + " user_name = ?,"
                         + " birthday = ?,"
                         + " age = ?,"
                         + " marriage = ?"
                         + " WHERE user_id = ?",
-                user.getPassword(),
+               // password,
                 user.getUserName(),
                 user.getBirthday(),
                 user.getAge(),
@@ -103,6 +119,9 @@ public class UserDaoJdbcImpl implements UserDao {
                 user.getUserId());
 
 
+        //if(rowNumber > 0) {
+        //    throw new DataAccessException("トランザクションテスト"){};
+        //}
         return rowNumber;
     }
 
@@ -116,6 +135,12 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public void userCsvOut() throws DataAccessException {
+
+        String sql = "SELECT * FROM m_user";
+
+        UserRowCallbackHandler handler = new UserRowCallbackHandler();
+
+        jdbc.query(sql,handler);
 
     }
 

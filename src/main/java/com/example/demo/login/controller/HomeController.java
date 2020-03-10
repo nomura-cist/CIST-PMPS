@@ -8,6 +8,9 @@ import com.example.demo.login.domain.service.ContactService;
 import com.example.demo.login.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,11 +81,7 @@ public class HomeController {
         return "login/homeLayout";
     }
 
-    @GetMapping("/userList/csv")
-    public String getUserListCsv(Model model) {
 
-        return getUserList(model);
-    }
 
     @GetMapping("/userDetail/{id:.+}")
     public String getUserDetail(@ModelAttribute SignupForm form, Model model, @PathVariable("id")String userId) {
@@ -89,6 +89,37 @@ public class HomeController {
         System.out.println("userId="+userId);
 
         model.addAttribute("contents","login/userDetail::userDetail_contents");
+
+        radioMarriage = initRadioMarrige();
+
+        model.addAttribute("radioMarriage",radioMarriage);
+
+        if (userId != null && userId.length()>0){
+
+            User user = userService.selectOne(userId);
+
+            form.setUserId(user.getUserId());
+            //form.setPassword(user.getPassword());
+            form.setUserName(user.getUserName());
+            form.setBirthday(user.getBirthday());
+            form.setAge(user.getAge());
+            form.setMarriage(user.isMarriage());
+
+            model.addAttribute("signupForm",form);
+
+
+        }
+        return "login/homeLayout";
+    }
+
+    ////
+
+    @GetMapping("/AdminDetail/{id:.+}")
+    public String getAdminDetail(@ModelAttribute SignupForm form, Model model, @PathVariable("id")String userId) {
+
+        System.out.println("userId="+userId);
+
+        model.addAttribute("contents","login/AdminDetail::AdminDetail_contents");
 
         radioMarriage = initRadioMarrige();
 
@@ -143,14 +174,14 @@ public class HomeController {
         User user = new User();
 
         user.setUserId(form.getUserId());
-        user.setPassword(form.getPassword());
+        //user.setPassword(form.getPassword());
         user.setUserName(form.getUserName());
         user.setBirthday(form.getBirthday());
         user.setAge(form.getAge());
         user.setMarriage(form.isMarriage());
 
         try {
-
+            System.out.println(form.getPassword());
             boolean result = userService.updateOne(user);
 
             if (result == true) {
@@ -189,6 +220,28 @@ public class HomeController {
         return getUserList(model);
     }
 
+    @PostMapping(value = "/contactDetail",params = "update")
+    public String postContactDetailUpdate(@ModelAttribute ContactForm form,Model model){
+
+        Contact contact = new Contact();
+
+        contact.setTitle(form.getTitle());
+        contact.setText(form.getText());
+        contact.setContributor(form.getContributor());
+        contact.setCreateDate(form.getCreateDate());
+
+        boolean result = contactService.updateOne(contact);
+
+        if (result == true) {
+            model.addAttribute("result", "更新成功");
+        } else {
+            model.addAttribute("result", "更新失敗");
+        }
+
+        return getContactList(model);
+
+    }
+
 
     @PostMapping(value = "/contactDetail",params = "delete")
     public String postContactDetailDelete(@ModelAttribute ContactForm form,Model model) {
@@ -214,5 +267,54 @@ public class HomeController {
         return "redirect:/login";
     }
 
+    @PostMapping("/pmps")
+    public String postPmps(Model model) {
 
-}
+        model.addAttribute("contents","login/home::home_contents");
+        return "login/homeLayout";
+    }
+
+
+
+    @GetMapping("/userList/csv")
+    public ResponseEntity<byte[]> getUserListCsv(Model model) {
+
+        userService.userCsvOut();
+
+        byte[] bytes = null;
+
+        try {
+
+            bytes = userService.getFile("sample.csv");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        HttpHeaders header = new HttpHeaders();
+        header.add("Content-Type", "text/csv; charset=UTF-8");
+        header.setContentDispositionFormData("filename", "sample.csv");
+
+        //sample.csvを戻す
+        return new ResponseEntity<>(bytes, header, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin")
+    public String getAdmin(Model model) {
+
+        //model.addAttribute("contents","login/userList::userList_contents");
+
+            model.addAttribute("contents","login/admin::admin_contents");
+
+            List<User> userList = userService.selectMany();
+
+            model.addAttribute("userList",userList);
+
+            int count = userService.count();
+            model.addAttribute("userListCount",count);
+
+            return "login/homeLayout";
+        }
+
+    }
+
+
+

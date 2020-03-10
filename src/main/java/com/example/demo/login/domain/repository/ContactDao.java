@@ -19,6 +19,6 @@ public interface ContactDao {
 
     public int deleteOne(String title) throws DataAccessException;
 
-    public void userCsvOut() throws DataAccessException;
+
 }
 

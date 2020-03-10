@@ -83,7 +83,9 @@ public class ContactDaoJdbcImpl implements ContactDao {
     // Userテーブルを１件更新.
     @Override
     public int updateOne(Contact contact) throws DataAccessException {
-        return 0;
+
+        int rowNumber = jdbc.update("UPDATE m_contact set text=?,contribute=?,create_date=? where title=?",contact.getText(),contact.getContributor(),contact.getCreateDate(),contact.getTitle());
+        return rowNumber;
     }
 
     // Userテーブルを１件削除.
@@ -95,10 +97,7 @@ public class ContactDaoJdbcImpl implements ContactDao {
     }
 
     // SQL取得結果をサーバーにCSVで保存する
-    @Override
-    public void userCsvOut() throws DataAccessException {
 
-    }
 }
 
 
